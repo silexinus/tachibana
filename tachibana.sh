@@ -73,7 +73,6 @@ call_bucellarii_updater() {
 # I copied this fun from bucellarii-updater.sh , so once I do the fix mentioned herein, on that function, I have to update every copy manually
 # Download with 20-second timeout
 download_with_timeout() {
-    echo "hi"
     local url="$1"
     local output="$2"
     local timeout="${3:-20}" # Default value is 20 seconds, but you can pass another value
