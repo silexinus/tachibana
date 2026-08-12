@@ -1,0 +1,9 @@
+bk-sh-files/
+*.swp
+*.swo
+*.txt
+!.versions_bucellarii.txt
+*.sh
+!tachibana.sh
+*tar.gz
+Older-versions-tachibana/
