@@ -4,10 +4,25 @@
 # Use this program for manually converting a handful of molecules.
 # For anything bigger than that, you're better off using milasestro
 
-fileversions=".versions_bucellarii"
 programname="tachibana"
-urlupdater="https://raw.githubusercontent.com/silexinus/bucellarii-updater/main/bucellarii-updater.sh"
-nameupdater="bucellarii-updater.sh"
+updaterurl="https://raw.githubusercontent.com/silexinus/bucellarii-updater/main/bucellarii-updater.sh"
+updatername="bucellariiupdater"
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+fileversions="${script_dir}/.versions_bucellarii.txt"
+
+returnupdaterfilename() {
+    local progname="$1"
+    if [[ "$progname" == "bucellariiupdater" ]]; then
+        echo "bucellarii-updater.sh"
+        return 0
+    else
+        echo "Wrong value passed to returnupdaterfilename? The only defined value is supposed to be 'bucellariiupdater'" >&2
+        return 1
+    fi
+}
+updaterfilename=$(returnupdaterfilename "$updatername")
+updaterpath=${script_dir}/"$updaterfilename"
 
 # Function to print the readme
 print_readme() {
@@ -65,8 +80,7 @@ EOF
 
 # bucellarii interface (pt1 of 4)
 call_bucellarii_updater() {
-    local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    "$script_dir/$nameupdater" "$@"
+    "$script_dir/$updaterfilename" "$@"
 }
 
 # bucellarii interface (pt2 of 4)
@@ -86,17 +100,15 @@ download_with_timeout() {
 # bucellarii interface (pt3 of 4)
 ensure_updater() {
     local programname="$1"
-    local nameupdater="$2"
-    local action="$3"
+    local action="$2"
 
-    if [ -f "$nameupdater" ]; then
+    if [ -f "$updaterpath" ]; then
         call_bucellarii_updater --self-update
     else
-        download_with_timeout "$urlupdater" "$nameupdater"
-        chmod u+x "$nameupdater"
+        download_with_timeout "$updaterurl" "$updaterfilename"
+        chmod u+x "$updaterfilename"
 
-        local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-        mv -f "$nameupdater" "$script_dir"
+        mv -f "$updaterfilename" "$script_dir"
 
         if [ $? -eq 1 ]; then
             echo "Could not $action $programname. Network unavailable."
@@ -115,7 +127,7 @@ for arg in "$@"; do
         #   own versions and hence the updater handles that and 
         #   creates the versions file and all that.
         -i|-u|--update)
-            ensure_updater "$programname" "$nameupdater" "update"
+            ensure_updater "$programname" "update"
             call_bucellarii_updater --update "$programname"
             exit 0
             ;;
@@ -127,7 +139,7 @@ for arg in "$@"; do
             exit 0
             ;;
         -U|--check-update)
-            ensure_updater "$programname" "$nameupdater" "check-update"
+            ensure_updater "$programname" "check-update"
             call_bucellarii_updater --check-update "$programname"
             exit 0
             ;;
