@@ -66,14 +66,13 @@ EOF
 # bucellarii interface (pt1 of 4)
 call_bucellarii_updater() {
     local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    "$script_dir/$nameupdater" "$@"
+    "$script_dir/bucellarii_updater.sh" "$@"
 }
 
 # bucellarii interface (pt2 of 4)
 # I copied this fun from bucellarii-updater.sh , so once I do the fix mentioned herein, on that function, I have to update every copy manually
 # Download with 20-second timeout
 download_with_timeout() {
-    echo "hi"
     local url="$1"
     local output="$2"
     local timeout="${3:-20}" # Default value is 20 seconds, but you can pass another value
@@ -89,16 +88,12 @@ ensure_updater() {
     local programname="$1"
     local nameupdater="$2"
     local action="$3"
-
+    
     if [ -f "$nameupdater" ]; then
         call_bucellarii_updater --self-update
     else
         download_with_timeout "$urlupdater" "$nameupdater"
         chmod u+x "$nameupdater"
-
-        local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-        mv -f "$nameupdater" "$script_dir"
-
         if [ $? -eq 1 ]; then
             echo "Could not $action $programname. Network unavailable."
             exit 1
