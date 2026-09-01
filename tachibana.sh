@@ -46,7 +46,8 @@ OPTIONS:
     -h, --help               Display this help message
     -u, --update             Updates the program
     -v, --version            Display the local version
-    -U, --check-update       Display the local and newest versions
+    -V, --compare-version    Display the local and newest versions
+    --compare-versions       Alias for --compare-version
 
 EXAMPLES:
   Canonicalize ethanol:
@@ -55,7 +56,7 @@ EXAMPLES:
   Convert aniline or formaldehyde to XYZ:
     $:tachibana "c1ccncc1" --smi2xyz
     $:tachibana -x "C=O"
-  If you want to save the coordinates to disk, run something like this:
+  If you want to save the coordinates to disk, you can do:
     $:tachibana -x "C=O" > formaldehyde.xyz
 
   Get molecular formula of gabapentin:
@@ -138,9 +139,9 @@ for arg in "$@"; do
             }
             exit 0
             ;;
-        -U|--check-update)
-            ensure_updater "$programname" "check-update"
-            call_bucellarii_updater --check-update "$programname"
+        -V|--compare-version|--compare-versions)
+            ensure_updater "$programname" "compare-version"
+            call_bucellarii_updater --compare-version "$programname"
             exit 0
             ;;
     esac
@@ -173,7 +174,7 @@ mode_count=0
 # Parse arguments
 for arg in "$@"; do
     case "$arg" in
-        -h|--help)
+        --help|-h)
             print_readme
             exit 0
             ;;

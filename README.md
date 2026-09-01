@@ -3,7 +3,8 @@ Simple interface for converting a handful of SMILES using OpenBabel. This way yo
 
 I would ocassionally need a simple `obabel` conversion but couldn't remember all the necessary flags. This eventually warranted a standalone script, and it kept growing. Now you too can use `obabel` without having to remember all the flags for that one call you used weeks ago.
 
-`tachibana` can also:
+`tachibana` can:
+* Canonicalize a smi.
 * Convert a smi to xyz coordinates.
 * Write the molecule's chemical formula as plain text, or in `chemformula.sty` or `mhchem.sty` syntax.
 
@@ -35,7 +36,7 @@ Molecular formula as plain text:
 ```
 $:tachibana -f "OC(=O)CC1(CCCCC1)CN"
 ```
-The output is `C9H17NO2`.
+The output is `C9H17NO2`. Note that as of `openbabel v3.2.1`, smis with explicit hydrogens (such as `[H].[O][H]`) can have wrong hydrogen counts (see [this issue](https://github.com/openbabel/openbabel/issues/3008).
 
 Molecular formula in `chemformula.sty` syntax (the -n comes from Niederberger, the package's author):
 ```
@@ -51,10 +52,10 @@ Other flags:
 * `-h`: print help message
 * `-u`: update the program
 * `-v`: display local version
-* `-U`: display local and newest versions
+* `-V`: display local and newest versions
 
 ## System requirements
-* OpenBabel (obabel command must be in PATH)
+* OpenBabel (obabel command must be in PATH). OpenBabel's install instructions are available at <https://openbabel.org/docs/Installation/install.html>
 
 ## License
 GPLv3
