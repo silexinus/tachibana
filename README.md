@@ -36,7 +36,7 @@ Molecular formula as plain text:
 ```
 $:tachibana -f "OC(=O)CC1(CCCCC1)CN"
 ```
-The output is `C9H17NO2`. Note that as of `openbabel v3.2.1`, smis with explicit hydrogens (such as `[H].[O][H]`) can have wrong hydrogen counts (see [this issue](https://github.com/openbabel/openbabel/issues/3008).
+The output is `C9H17NO2`. Note that as of `openbabel v3.2.1`, smis with explicit hydrogens (such as `[H].[O][H]`) can have wrong hydrogen counts (see [this issue](https://github.com/openbabel/openbabel/issues/3008)).
 
 Molecular formula in `chemformula.sty` syntax (the -n comes from Niederberger, the package's author):
 ```
